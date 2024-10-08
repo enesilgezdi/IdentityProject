@@ -1,0 +1,6 @@
+@IdentityProject.WebApi1_HostAddress = http://localhost:5232
+
+GET {{IdentityProject.WebApi1_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
