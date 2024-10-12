@@ -1,9 +1,20 @@
+using IdentityProject.WebApi1.Contexts;
+using IdentityProject.WebApi1.Repository.Abstracts;
+using IdentityProject.WebApi1.Repository.Concretes;
+using IdentityProject.WebApi1.Services.Abstracts;
+using IdentityProject.WebApi1.Services.Concretes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+
+builder.Services.AddDbContext<MsSqlContext>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

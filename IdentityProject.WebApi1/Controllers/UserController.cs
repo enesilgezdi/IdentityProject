@@ -1,5 +1,7 @@
 ﻿using IdentityProject.WebApi1.Contexts;
 using IdentityProject.WebApi1.Models;
+using IdentityProject.WebApi1.Models.Dtos.User.Request;
+using IdentityProject.WebApi1.Services.Abstracts;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Xml.Linq;
@@ -10,7 +12,7 @@ namespace IdentityProject.WebApi1.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    MsSqlContext msSqlContext = new MsSqlContext();
+    //MsSqlContext msSqlContext = new MsSqlContext();
     //private static List<User> users = new List<User>()
     //{
     //    new User
@@ -107,33 +109,40 @@ public class UserController : ControllerBase
 
     //}
 
-    [HttpPost("add")]
-    public IActionResult Add(User user)
+    private IUserService _userService;
+    public UserController(IUserService userService)
     {
-        // insert into Users(...) values (...)
-        msSqlContext.Users.Add(user);
-        msSqlContext.SaveChanges();
-
-        return Ok(user);
-    }
-    // IEntityTypeConfigurationBuilder
-
+        _userService = userService;
+    }  
 
     [HttpGet("getall")]
     public IActionResult GetAll()
     {
+        // insert into Users(...) values (...)
+        //msSqlContext.Users.Add(user);
+        //msSqlContext.SaveChanges();
+
+        //return Ok(user);
+
+        var result = _userService.GetAllUser();
+        return Ok(result);
+    }
+    // IEntityTypeConfigurationBuilder
+
+
+    [HttpPost("add")]
+    public IActionResult Add(AddUserRequestDto user)
+    {
         // select * from users
-        List<User> users = msSqlContext.Users.ToList();
-        return Ok(users);
+        var result = _userService.Add(user);
+        return Ok(result);
     }
 
-    [HttpGet("getbyid")]
-    public IActionResult GetById(int id)
+    [HttpGet("getemail")]
+    public IActionResult GetByEmail(string email)
     {
-        // select * from users where id = (id)
-        User user = msSqlContext.Users.Find(id);
 
-        return Ok(user);
-
+        var result = _userService.GetByEmail(email);
+        return Ok(result);
     }
 }
